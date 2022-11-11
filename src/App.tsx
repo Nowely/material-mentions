@@ -1,6 +1,4 @@
 import {ForwardedRef, forwardRef, useState} from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
 import {OverlayProps} from "rc-marked-input/types/types";
 import {
     Avatar,
