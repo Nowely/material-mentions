@@ -13,7 +13,7 @@ function App() {
                 Mark={Chip}
                 value={value}
                 onChange={(val: string) => setValue(val)}
-                Overlay={Users}
+                Overlay={UserList}
             >
                 <Option<ChipProps>
                     initMark={({label, value}) => ({label, avatar: <Avatar>{value}</Avatar>, size: "small"})}
