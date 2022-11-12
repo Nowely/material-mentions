@@ -1,43 +1,42 @@
 import {OverlayProps} from "rc-marked-input/types/types";
 import {Divider, List} from "@mui/material";
-import {UserItem} from "./UserItem";
+import {User, UserItem} from "./UserItem";
+import {Fragment, useEffect, useState} from "react";
 
-const users = [{
-    avatar: 'RS',
-    avatarAlt: 'Remy Sharp',
-    title: "Brunch this weekend?",
-    primary: 'Ali Connors',
-    secondary: " — I'll be in your neighborhood doing errands this…",
-}, {
-    avatar: 'TH',
-    avatarAlt: 'Travis Howard',
-    title: "Summer BBQ?",
-    primary: 'to Scott, Alex, Jennifer',
-    secondary: " — Wish I could come, but I'm out of town this…",
-}, {
-    avatar: 'CB',
-    avatarAlt: 'Cindy Baker',
-    title: "Oui Oui",
-    primary: 'Sandra Adams',
-    secondary: "  — Do you have Paris recommendations? Have you ever…",
-}]
+export const UserList = ({onSelect, trigger}: OverlayProps) => {
+    const [data, setData] = useState<User[]>([])
+    const [loading, setLoading] = useState(false);
 
-export const UserList = ({onSelect}: OverlayProps) => {
+    useEffect(() => {
+        const abortController = new AbortController();
+        //setLoading(true);
+        fetch(`https://api.github.com/search/users?q=${trigger.value}`, {signal: abortController.signal})
+            .then(res => res.json())
+            .then(({items = []}) => {
+                setData(items.slice(0, 10).map((i: any) => ({login: i.login, name: i.name, bio: i.bio, avatarUrl: i.avatar_url})))
+            })
+            .catch(reason => console.error(reason))
+        //.finally(() => setLoading(false))
+
+
+        return () => abortController.abort()
+    }, [trigger.value])
+
+    if (data.length === 0) return <div>Not found!</div>
 
     return (
         <List sx={{maxWidth: 360}}>
-            {users.map(({avatar, avatarAlt, title, primary, secondary}) => (
-                <>
+            {data.map(({login, name, bio, avatarUrl}) => (
+                <Fragment key={login}>
                     <UserItem
-                        onClick={() => onSelect({label: avatarAlt, value: avatar})}
-                        avatar={avatar}
-                        avatarAlt={avatarAlt}
-                        title={title}
-                        primary={primary}
-                        secondary={secondary}
+                        onSelect={onSelect}
+                        login={login}
+                        name={name}
+                        bio={bio}
+                        avatarUrl={avatarUrl}
                     />
                     <Divider variant="inset" component="li"/>
-                </>
+                </Fragment>
             ))}
         </List>
     )

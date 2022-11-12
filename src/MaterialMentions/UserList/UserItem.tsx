@@ -1,23 +1,25 @@
 import {Avatar, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
 
-interface UserItemProps {
-    onClick: () => void
-    avatar: string
-    avatarAlt: string
-    title: string
-    primary: string
-    secondary: string
+export interface UserItemProps {
+    onSelect: (mark: { label: string, value?: string }) => void
+    avatarUrl?: string
+    login: string
+    name?: string
+    bio?: string
 }
 
-export const UserItem = ({onClick, avatar, avatarAlt, title, secondary, primary}: UserItemProps) => {
+export type User = Omit<UserItemProps, 'onSelect'>
+
+export const UserItem = ({onSelect, login, bio, name, avatarUrl}: UserItemProps) => {
+    const avatarAlt = name?.split(' ').slice(0, 3).map(value => value[0]).join('') ?? login[0]
 
     return (
-        <ListItem onClick={onClick}>
+        <ListItem onClick={() => onSelect({label: login, value: avatarUrl ?? avatarAlt})}>
             <ListItemAvatar>
-                <Avatar alt={avatarAlt} children={avatar}/>
+                <Avatar src={avatarUrl} children={avatarAlt}/>
             </ListItemAvatar>
             <ListItemText
-                primary={title}
+                primary={login}
                 secondary={
                     <>
                         <Typography
@@ -26,9 +28,10 @@ export const UserItem = ({onClick, avatar, avatarAlt, title, secondary, primary}
                             variant="body2"
                             color="text.primary"
                         >
-                            {primary}
+                            {name}
                         </Typography>
-                        {secondary}
+                        <br/>
+                        {bio}
                     </>
                 }>
             </ListItemText>
