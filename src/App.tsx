@@ -7,7 +7,7 @@ function App() {
     )
 
     return (
-        <div className="App">
+        <div className="Central">
             <MaterialMentions value={value} onChange={setValue}/>
         </div>
     )
