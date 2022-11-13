@@ -1,8 +1,7 @@
 import {createMarkedInput} from "rc-marked-input";
-import {Avatar, Chip, ChipProps} from "@mui/material";
 import {UserList} from "./UserList";
+import {Mention} from "./Mention";
 
-export const MaterialMentions = createMarkedInput(Chip, UserList, [{
-    initMark: ({label, value}) =>
-        ({label, avatar: <Avatar src={value}>{value}</Avatar>, size: "small" as ChipProps['size']})
+export const MaterialMentions = createMarkedInput(Mention, UserList, [{
+    markup: "@[__label__]",
 }])

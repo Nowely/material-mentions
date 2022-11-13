@@ -1,25 +1,28 @@
 import {Avatar, ListItem, ListItemAvatar, ListItemText, Typography} from "@mui/material";
+import {getAbbr} from "../utils/getAbbr";
 
 export interface UserItemProps {
     onSelect: (mark: { label: string, value?: string }) => void
-    avatarUrl?: string
+    user: User
+}
+
+export type User = {
+    avatar_url?: string
     login: string
     name?: string
     bio?: string
 }
 
-export type User = Omit<UserItemProps, 'onSelect'>
-
-export const UserItem = ({onSelect, login, bio, name, avatarUrl}: UserItemProps) => {
-    const avatarAlt = name?.split(' ').slice(0, 3).map(value => value[0]).join('') ?? login[0]
+export const UserItem = ({onSelect, user}: UserItemProps) => {
+    const abbr = getAbbr(user.name) ?? user.login[0]
 
     return (
-        <ListItem onClick={() => onSelect({label: login, value: avatarUrl ?? avatarAlt})}>
+        <ListItem onClick={() => onSelect({label: user.login, value: user.avatar_url ?? abbr})}>
             <ListItemAvatar>
-                <Avatar src={avatarUrl} children={avatarAlt}/>
+                <Avatar src={user.avatar_url} children={abbr}/>
             </ListItemAvatar>
             <ListItemText
-                primary={login}
+                primary={user.login}
                 secondary={
                     <>
                         <Typography
@@ -28,13 +31,14 @@ export const UserItem = ({onSelect, login, bio, name, avatarUrl}: UserItemProps)
                             variant="body2"
                             color="text.primary"
                         >
-                            {name}
+                            {user.name}
                         </Typography>
                         <br/>
-                        {bio}
+                        {user.bio}
                     </>
                 }>
             </ListItemText>
         </ListItem>
     )
 }
+
