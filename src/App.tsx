@@ -3,7 +3,7 @@ import {MaterialMentions} from "./MaterialMentions";
 
 function App() {
     const [value, setValue] = useState(
-        `Enter the '@' for calling mention list: \n- Hello @[Agustina] and @[Ruslan]!`
+        `Enter the '@' for calling mention list: \n- Hello @Agustina and @[Ruslan]!`
     )
 
     return (

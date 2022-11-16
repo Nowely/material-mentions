@@ -1,17 +1,10 @@
 import {Avatar, ListItem, ListItemAvatar, ListItemButton, ListItemText} from "@mui/material";
+import {Mark} from "rc-marked-input/types/types";
+import {SearchUser} from "../types";
 
 export interface UserItemProps {
-    onSelect: (mark: { label: string, value?: string }) => void
+    onSelect: (mark: Mark) => void
     user: SearchUser
-}
-
-export type SearchUser = Pick<User, 'login' | 'avatar_url'>
-
-export type User = {
-    avatar_url?: string
-    login: string
-    name?: string
-    bio?: string
 }
 
 export const UserItem = ({onSelect, user}: UserItemProps) => {

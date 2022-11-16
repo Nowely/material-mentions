@@ -1,13 +1,12 @@
-import {useState} from "react";
 import {OverlayProps} from "rc-marked-input/types/types";
 import {List, Paper} from "@mui/material";
-import {SearchUser, UserItem} from "./UserItem";
+import {UserItem} from "./UserItem";
 import {useFetch} from "../utils/useFetch";
+import {SearchUser} from "../types";
 
 export const UserList = ({onSelect, trigger: {value}, style}: OverlayProps) => {
-    const [users, setUsers] = useState<SearchUser[]>([])
-
-    useFetch(`https://api.github.com/search/users?q=${value}`, ({items = []}) => setUsers(items), [value])
+    const [data] = useFetch<{items: SearchUser[]}>(`https://api.github.com/search/users?q=${value}`, [value])
+    const users = data?.items ?? []
 
     if (users.length === 0) return null
 
